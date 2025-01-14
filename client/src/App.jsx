@@ -1,14 +1,15 @@
 import { Container } from "react-bootstrap";
+import { Outlet } from "react-router";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import HomePage from "./pages/HomePage";
+
 const App = () => {
   return (
     <>
       <Header />
       <main>
         <Container>
-          <HomePage />
+          <Outlet />
         </Container>
       </main>
       <Footer />

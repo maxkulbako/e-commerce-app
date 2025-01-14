@@ -1,7 +1,6 @@
-import { Container, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import products from "../../public/products";
 import Product from "../components/Product";
-import React from "react";
 
 const HomePage = () => {
   return (
