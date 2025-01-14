@@ -6,7 +6,7 @@ import "./assets/styles/index.css";
 import App from "./App.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import NotFaundPage from "./pages/NotFaundPage.jsx";
-
+import ProductPage from "./pages/ProductPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -17,8 +17,8 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "product:id",
-        element: <div>Product Page</div>,
+        path: "product/:productId",
+        element: <ProductPage />,
       },
       {
         path: "login",
