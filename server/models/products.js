@@ -48,7 +48,7 @@ const poductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    descriptin: {
+    description: {
       type: String,
       required: true,
     },
@@ -75,3 +75,5 @@ const poductSchema = new mongoose.Schema(
 );
 
 const Product = mongoose.model("Product", poductSchema);
+
+export default Product;
