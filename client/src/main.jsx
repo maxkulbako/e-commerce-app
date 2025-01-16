@@ -9,6 +9,7 @@ import App from "./App.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import NotFaundPage from "./pages/NotFaundPage.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
+import CartPage from "./pages/CartPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
         path: "product/:productId",
         element: <ProductPage />,
       },
+      { path: "cart", element: <CartPage /> },
       {
         path: "login",
         element: <div>Login Page</div>,
