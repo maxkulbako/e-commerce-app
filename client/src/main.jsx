@@ -10,6 +10,7 @@ import HomePage from "./pages/HomePage.jsx";
 import NotFaundPage from "./pages/NotFaundPage.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
 import CartPage from "./pages/CartPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
       { path: "cart", element: <CartPage /> },
       {
         path: "login",
-        element: <div>Login Page</div>,
+        element: <LoginPage />,
       },
       {
         path: "*",
