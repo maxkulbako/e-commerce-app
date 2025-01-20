@@ -15,7 +15,7 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import ShippingPage from "./pages/ShippingPage.jsx";
 import PrivatRoute from "./pages/PrivatRoute.jsx";
 import PaymentPage from "./pages/PaymentPage.jsx";
-
+import PlaceOrder from "./pages/PlaceOrder.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -49,6 +49,10 @@ const router = createBrowserRouter([
           {
             path: "payment",
             element: <PaymentPage />,
+          },
+          {
+            path: "placeorder",
+            element: <PlaceOrder />,
           },
         ],
       },
