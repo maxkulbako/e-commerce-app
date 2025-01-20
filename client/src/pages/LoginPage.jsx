@@ -22,7 +22,6 @@ const LoginPage = () => {
   const { search } = useLocation();
   const sp = new URLSearchParams(search);
   const redirect = sp.get("redirect") || "/";
-  console.log(redirect);
 
   useEffect(() => {
     if (userInfo) {
@@ -77,7 +76,10 @@ const LoginPage = () => {
       </Form>
       <Row className="py-3">
         <Col>
-          New Customer? <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>Register</Link>
+          New Customer?{" "}
+          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
+            Register
+          </Link>
         </Col>
       </Row>
     </FormContainer>
