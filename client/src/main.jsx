@@ -11,7 +11,7 @@ import NotFaundPage from "./pages/NotFaundPage.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
 import CartPage from "./pages/CartPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
-
+import RegisterPage from "./pages/RegisterPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <LoginPage />,
+      },
+      {
+        path: "register",
+        element: <RegisterPage />,
       },
       {
         path: "*",
