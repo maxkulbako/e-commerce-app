@@ -16,6 +16,8 @@ import ShippingPage from "./pages/ShippingPage.jsx";
 import PrivatRoute from "./pages/PrivatRoute.jsx";
 import PaymentPage from "./pages/PaymentPage.jsx";
 import PlaceOrder from "./pages/PlaceOrder.jsx";
+import OrderPage from "./pages/OrderPage.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -53,6 +55,10 @@ const router = createBrowserRouter([
           {
             path: "placeorder",
             element: <PlaceOrder />,
+          },
+          {
+            path: "order/:id",
+            element: <OrderPage />,
           },
         ],
       },
