@@ -31,6 +31,11 @@ app.get("/", (req, res) => {
 app.use("/api/products", productsRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
+
+app.get("/api/config/paypal", (req, res) => {
+  res.json({ clientId: process.env.PAYPAL_CLIENT_ID });
+});
+
 app.use(notFound);
 app.use(errorHandler);
 

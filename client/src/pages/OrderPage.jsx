@@ -8,25 +8,113 @@ import {
   Button,
   Form,
 } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { useGetOrderDetailsQuery } from "../slices/ordersApiSlice";
-import { useSelector } from "react-redux";
+import {
+  useGetOrderDetailsQuery,
+  usePayOrderMutation,
+  useGetPaypalClientIdQuery,
+} from "../slices/ordersApiSlice";
 
 const OrderPage = () => {
-  const { id } = useParams();
+  const { orderId } = useParams();
+
   const {
     data: order,
     refetch,
     isLoading,
     error,
-  } = useGetOrderDetailsQuery(id);
+  } = useGetOrderDetailsQuery(orderId);
+
   const { userInfo } = useSelector((state) => state.auth);
+
+  const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+
+  const [{ isPending, isResolved }, paypalDispatch] = usePayPalScriptReducer();
+
+  const {
+    data: paypal,
+    isLoading: loadingPaypal,
+    error: errorPaypal,
+  } = useGetPaypalClientIdQuery();
+
+  useEffect(() => {
+    if (!errorPaypal && !loadingPaypal && paypal?.clientId) {
+      const loadPayPalScript = async () => {
+        paypalDispatch({
+          type: "resetOptions",
+          value: {
+            "client-id": paypal?.clientId,
+            currency: "EUR",
+          },
+        });
+        paypalDispatch({
+          type: "setLoadingStatus",
+          value: "pending",
+        });
+      };
+      if (order && !order.isPaid) {
+        if (!window.paypal) {
+          loadPayPalScript();
+        }
+      }
+    }
+  }, [errorPaypal, loadingPaypal, paypalDispatch, paypal, order]);
+
+  // const onApproveTest = async () => {
+  //   try {
+  //     await payOrder({ orderId, details: { payerId: "test" } });
+  //     refetch();
+  //     toast.success("Payment successful");
+  //   } catch (error) {
+  //     toast.error(error?.data?.message || error?.error || "An error occurred");
+  //   }
+  // };
+
+  const onApprove = (data, actions) => {
+    return actions.order.capture().then(async (details) => {
+      console.log(details);
+      try {
+        await payOrder({ orderId, details });
+        refetch();
+        toast.success("Payment successful");
+      } catch (error) {
+        toast.error(
+          error?.data?.message || error?.error || "An error occurred"
+        );
+      }
+    });
+  };
+
+  const onError = (error) => {
+    toast.error(error?.data?.message || error?.error || "An error occurred");
+  };
+
+  const createOrder = (data, actions) => {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            amount: { value: order.totalPrice, currency_code: "EUR" },
+          },
+        ],
+      })
+      .then((orderId) => {
+        return orderId;
+      });
+  };
 
   return isLoading ? (
     <Loader />
   ) : error ? (
-    <Message variant="danger">{error}</Message>
+    <Message variant="danger">
+      {" "}
+      {error?.data?.message || error?.error || "An error occurred"}
+    </Message>
   ) : (
     <>
       <h1>Order {order._id}</h1>
@@ -110,6 +198,31 @@ const OrderPage = () => {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+              {!order.isPaid && (
+                <ListGroup.Item>
+                  {isPending ? (
+                    <Loader />
+                  ) : (
+                    <div>
+                      {/* <Button
+                        type="button"
+                        variant="primary"
+                        style={{ marginBottom: "10px" }}
+                        onClick={onApproveTest}
+                      >
+                        Test Pay Order
+                      </Button> */}
+                      <div>
+                        <PayPalButtons
+                          createOrder={createOrder}
+                          onApprove={onApprove}
+                          onError={onError}
+                        ></PayPalButtons>
+                      </div>
+                    </div>
+                  )}
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>
