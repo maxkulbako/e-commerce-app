@@ -3,6 +3,7 @@ import { Table, Button } from "react-bootstrap";
 import Loader from "../../components/Loader";
 import { useGetOrdersQuery } from "../../slices/ordersApiSlice";
 import { FaTimes } from "react-icons/fa";
+
 const OrdersList = () => {
   const { data: orders, isLoading, error } = useGetOrdersQuery();
 
