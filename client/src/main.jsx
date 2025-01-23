@@ -14,11 +14,13 @@ import CartPage from "./pages/CartPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import ShippingPage from "./pages/ShippingPage.jsx";
-import PrivatRoute from "./pages/PrivatRoute.jsx";
+import PrivatRoute from "./components/PrivatRoute.jsx";
 import PaymentPage from "./pages/PaymentPage.jsx";
 import PlaceOrder from "./pages/PlaceOrder.jsx";
 import OrderPage from "./pages/OrderPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
+import OrdersList from "./pages/admin/OrdersList.jsx";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +67,16 @@ const router = createBrowserRouter([
           {
             path: "profile",
             element: <ProfilePage />,
+          },
+        ],
+      },
+      {
+        path: "",
+        element: <AdminRoute />,
+        children: [
+          {
+            path: "admin/orderslist",
+            element: <OrdersList />,
           },
         ],
       },
