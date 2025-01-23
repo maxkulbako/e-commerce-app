@@ -1,14 +1,29 @@
 import { Link } from "react-router";
 import { Table, Button, Row, Col } from "react-bootstrap";
 import Loader from "../../components/Loader";
-import { useGetProductsQuery } from "../../slices/productsApiSlice";
-import { FaTimes, FaEdit, FaTrash } from "react-icons/fa";
+import {
+  useGetProductsQuery,
+  useCreateProductMutation,
+} from "../../slices/productsApiSlice";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const ProductsListPage = () => {
   const { data: products, isLoading, error } = useGetProductsQuery();
 
+  const [createProduct, { isLoading: createProductLoading }] =
+    useCreateProductMutation();
+
   const deleteHandler = (id) => {
     console.log(id);
+  };
+
+  const createProductHandler = async () => {
+    try {
+      await createProduct();
+    } catch (err) {
+      toast.error(err?.data?.message || err.message);
+    }
   };
 
   return (
@@ -18,12 +33,13 @@ const ProductsListPage = () => {
           <h1>Products</h1>
         </Col>
         <Col className="d-flex justify-content-end">
-          <Button as={Link} to="/admin/product/create">
+          <Button onClick={() => createProductHandler()}>
             <FaEdit />
             <strong> Create Product</strong>
           </Button>
         </Col>
       </Row>
+      {createProductLoading && <Loader />}
       {isLoading ? (
         <Loader />
       ) : error ? (
