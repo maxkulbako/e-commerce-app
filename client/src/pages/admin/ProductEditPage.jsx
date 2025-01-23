@@ -7,17 +7,23 @@ import Message from "../../components/Message";
 import { useGetProductDetailsQuery } from "../../slices/productsApiSlice";
 import { useUpdateProductMutation } from "../../slices/productsApiSlice";
 import FormContainer from "../../components/FormContainer";
+import { useForm } from "react-hook-form";
 
 const ProductEditPage = () => {
   const { productId } = useParams();
 
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
-  const [brand, setBrand] = useState("");
-  const [category, setCategory] = useState("");
-  const [countInStock, setCountInStock] = useState("");
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      name: "",
+      price: "",
+      description: "",
+      brand: "",
+      category: "",
+      countInStock: "",
+    },
+  });
+
+  console.log("render");
 
   const navigate = useNavigate();
 
@@ -32,28 +38,15 @@ const ProductEditPage = () => {
 
   useEffect(() => {
     if (product) {
-      setName(product.name);
-      setPrice(product.price);
-      setDescription(product.description);
-      setImage(product.image);
-      setBrand(product.brand);
-      setCategory(product.category);
-      setCountInStock(product.countInStock);
+      reset(product);
     }
-  }, [product]);
+  }, [product, reset]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     try {
       await updateProduct({
         productId,
-        name,
-        price,
-        description,
-        image,
-        brand,
-        category,
-        countInStock,
+        ...data,
       }).unwrap();
       toast.success("Product updated successfully");
       navigate("/admin/productslist");
@@ -76,7 +69,7 @@ const ProductEditPage = () => {
           <Message variant="danger">{error}</Message>
         ) : (
           <Form
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             style={{ gap: "10px", display: "flex", flexDirection: "column" }}
           >
             <Form.Group controlId="name">
@@ -84,17 +77,12 @@ const ProductEditPage = () => {
               <Form.Control
                 type="text"
                 placeholder="Enter product name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                {...register("name")}
               />
             </Form.Group>
             <Form.Group controlId="price">
               <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="number"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
+              <Form.Control type="number" {...register("price")} />
             </Form.Group>
 
             {/* TODO: Add image upload */}
@@ -104,25 +92,19 @@ const ProductEditPage = () => {
               <Form.Control
                 type="text"
                 placeholder="Enter product brand"
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
+                {...register("brand")}
               />
             </Form.Group>
             <Form.Group controlId="countInStock">
               <Form.Label>Count In Stock</Form.Label>
-              <Form.Control
-                type="number"
-                value={countInStock}
-                onChange={(e) => setCountInStock(e.target.value)}
-              />
+              <Form.Control type="number" {...register("countInStock")} />
             </Form.Group>
             <Form.Group controlId="category">
               <Form.Label>Category</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter product category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                {...register("category")}
               />
             </Form.Group>
             <Form.Group controlId="description">
@@ -130,8 +112,7 @@ const ProductEditPage = () => {
               <Form.Control
                 type="text"
                 placeholder="Enter product description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                {...register("description")}
               />
             </Form.Group>
             <Button type="submit" variant="primary" className="mt-3">
