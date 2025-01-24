@@ -5,6 +5,7 @@ import Message from "../../components/Message";
 import {
   useGetProductsQuery,
   useCreateProductMutation,
+  useDeleteProductMutation,
 } from "../../slices/productsApiSlice";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -15,8 +16,16 @@ const ProductsListPage = () => {
   const [createProduct, { isLoading: createProductLoading }] =
     useCreateProductMutation();
 
-  const deleteHandler = (id) => {
-    console.log(id);
+  const [deleteProduct, { isLoading: deleteProductLoading }] =
+    useDeleteProductMutation();
+
+  const deleteHandler = async (id) => {
+    try {
+      await deleteProduct(id);
+      toast.success("Product deleted successfully");
+    } catch (err) {
+      toast.error(err?.data?.message || err.message);
+    }
   };
 
   const createProductHandler = async () => {
@@ -41,6 +50,7 @@ const ProductsListPage = () => {
         </Col>
       </Row>
       {createProductLoading && <Loader />}
+      {deleteProductLoading && <Loader />}
       {isLoading ? (
         <Loader />
       ) : error ? (
