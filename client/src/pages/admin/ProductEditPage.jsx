@@ -1,18 +1,21 @@
 import { useParams, useNavigate, Link } from "react-router";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
-import { useGetProductDetailsQuery } from "../../slices/productsApiSlice";
-import { useUpdateProductMutation } from "../../slices/productsApiSlice";
+import {
+  useUpdateProductMutation,
+  useUploadProductImageMutation,
+  useGetProductDetailsQuery,
+} from "../../slices/productsApiSlice";
 import FormContainer from "../../components/FormContainer";
 import { useForm } from "react-hook-form";
 
 const ProductEditPage = () => {
   const { productId } = useParams();
 
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
       name: "",
       price: "",
@@ -20,10 +23,9 @@ const ProductEditPage = () => {
       brand: "",
       category: "",
       countInStock: "",
+      image: "",
     },
   });
-
-  console.log("render");
 
   const navigate = useNavigate();
 
@@ -32,6 +34,9 @@ const ProductEditPage = () => {
     isLoading,
     error,
   } = useGetProductDetailsQuery(productId);
+
+  const [uploadProductImage, { isLoading: uploadProductImageLoading }] =
+    useUploadProductImageMutation();
 
   const [updateProduct, { isLoading: updateProductLoading }] =
     useUpdateProductMutation();
@@ -42,6 +47,26 @@ const ProductEditPage = () => {
     }
   }, [product, reset]);
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+
+    if (!file) {
+      toast.error("Please select a file");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await uploadProductImage(formData).unwrap();
+      toast.success("Image uploaded successfully");
+      setValue("image", response.image);
+    } catch (err) {
+      toast.error(err?.data?.message || "Image upload failed");
+    }
+  };
+
   const onSubmit = async (data) => {
     try {
       await updateProduct({
@@ -51,7 +76,7 @@ const ProductEditPage = () => {
       toast.success("Product updated successfully");
       navigate("/admin/productslist");
     } catch (err) {
-      toast.error(err?.data?.message || err?.error);
+      toast.error(err?.data?.message || err?.error || "Update failed");
     }
   };
 
@@ -66,7 +91,9 @@ const ProductEditPage = () => {
         {isLoading ? (
           <Loader />
         ) : error ? (
-          <Message variant="danger">{error}</Message>
+          <Message variant="danger">
+            {error?.data?.message || error?.message}
+          </Message>
         ) : (
           <Form
             onSubmit={handleSubmit(onSubmit)}
@@ -85,7 +112,19 @@ const ProductEditPage = () => {
               <Form.Control type="number" {...register("price")} />
             </Form.Group>
 
-            {/* TODO: Add image upload */}
+            <Form.Group controlId="image">
+              <Form.Label>Image</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter image URL"
+                {...register("image")}
+              />
+              <Form.Control
+                type="file"
+                onChange={handleImageUpload} // Завантаження файлу
+              />
+              {uploadProductImageLoading && <Loader />}
+            </Form.Group>
 
             <Form.Group controlId="brand">
               <Form.Label>Brand</Form.Label>

@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { Table, Button, Row, Col } from "react-bootstrap";
 import Loader from "../../components/Loader";
+import Message from "../../components/Message";
 import {
   useGetProductsQuery,
   useCreateProductMutation,
