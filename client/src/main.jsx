@@ -20,10 +20,10 @@ import PlaceOrder from "./pages/PlaceOrder.jsx";
 import OrderPage from "./pages/OrderPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import AdminRoute from "./components/AdminRoute.jsx";
-import OrdersList from "./pages/admin/OrdersListPage.jsx";
+import OrdersListPage from "./pages/admin/OrdersListPage.jsx";
 import ProductsListPage from "./pages/admin/productsListPage.jsx";
 import ProductEditPage from "./pages/admin/ProductEditPage.jsx";
-
+import UsersListPage from "./pages/admin/UsersListPage.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -78,7 +78,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "admin/orderslist",
-            element: <OrdersList />,
+            element: <OrdersListPage />,
           },
           {
             path: "admin/productslist",
@@ -87,6 +87,10 @@ const router = createBrowserRouter([
           {
             path: "admin/product/:productId/edit",
             element: <ProductEditPage />,
+          },
+          {
+            path: "admin/userslist",
+            element: <UsersListPage />,
           },
         ],
       },

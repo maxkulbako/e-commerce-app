@@ -5,7 +5,7 @@ import Message from "../../components/Message";
 import { useGetOrdersQuery } from "../../slices/ordersApiSlice";
 import { FaTimes } from "react-icons/fa";
 
-const OrdersList = () => {
+const OrdersListPage = () => {
   const { data: orders, isLoading, error } = useGetOrdersQuery();
 
   return (
@@ -70,4 +70,4 @@ const OrdersList = () => {
   );
 };
 
-export default OrdersList;
+export default OrdersListPage;

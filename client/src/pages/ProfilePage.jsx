@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { FaTimes } from "react-icons/fa";
-import { useUpdateUserMutation } from "../slices/usersApi";
+import { useUpdateUserProfileMutation } from "../slices/usersApi";
 import { setCredentials } from "../slices/authSlice";
 import { useGetMyOrdersQuery } from "../slices/ordersApiSlice";
 
@@ -21,8 +21,8 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [updateUser, { isLoading: loadingUpdateUser }] =
-    useUpdateUserMutation();
+  const [updateUserProfile, { isLoading: loadingUpdateUser }] =
+    useUpdateUserProfileMutation();
 
   const {
     data: orders,
@@ -46,7 +46,7 @@ const ProfilePage = () => {
     }
 
     try {
-      const res = await updateUser({
+      const res = await updateUserProfile({
         id: userInfo._id,
         name,
         email,
