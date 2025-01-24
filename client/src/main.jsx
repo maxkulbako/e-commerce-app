@@ -24,6 +24,8 @@ import OrdersListPage from "./pages/admin/OrdersListPage.jsx";
 import ProductsListPage from "./pages/admin/productsListPage.jsx";
 import ProductEditPage from "./pages/admin/ProductEditPage.jsx";
 import UsersListPage from "./pages/admin/UsersListPage.jsx";
+import UserEditPage from "./pages/admin/UserEditPage.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -91,6 +93,10 @@ const router = createBrowserRouter([
           {
             path: "admin/userslist",
             element: <UsersListPage />,
+          },
+          {
+            path: "admin/user/:userId/edit",
+            element: <UserEditPage />,
           },
         ],
       },
