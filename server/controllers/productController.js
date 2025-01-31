@@ -5,10 +5,20 @@ import Product from "../models/products.js";
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({});
+  const pageSize = 4;
+  const page = Number(req.query.pageNumber) || 1;
+  const count = await Product.countDocuments({});
+  const products = await Product.find({})
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
 
   if (products && products.length > 0) {
-    return res.json(products);
+    res
+      .status(200)
+      .json({ products, page, pages: Math.ceil(count / pageSize) });
+  } else {
+    res.status(404);
+    throw new Error("No products found");
   }
 });
 
@@ -99,7 +109,7 @@ const createProductReview = asyncHandler(async (req, res) => {
     const alreadyReviewed = product.reviews.find(
       (r) => r.user.toString() === req.user._id.toString()
     );
-  
+
     if (alreadyReviewed) {
       res.status(400);
       throw new Error("Product already reviewed");

@@ -1,7 +1,9 @@
 import { Link } from "react-router";
 import { Table, Button, Row, Col } from "react-bootstrap";
+import { useParams } from "react-router";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
+import Paginate from "../../components/Paginate";
 import {
   useGetProductsQuery,
   useCreateProductMutation,
@@ -11,7 +13,10 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const ProductsListPage = () => {
-  const { data: products, isLoading, error } = useGetProductsQuery();
+  const { pageNumber } = useParams();
+  const { data, isLoading, error } = useGetProductsQuery({
+    pageNumber: pageNumber || 1,
+  });
 
   const [createProduct, { isLoading: createProductLoading }] =
     useCreateProductMutation();
@@ -71,7 +76,7 @@ const ProductsListPage = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {data.products.map((product) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
@@ -99,6 +104,7 @@ const ProductsListPage = () => {
               ))}
             </tbody>
           </Table>
+          <Paginate pages={data.pages} page={data.page} isAdmin={true} />
         </>
       )}
     </>
