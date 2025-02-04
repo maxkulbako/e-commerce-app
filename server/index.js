@@ -26,21 +26,28 @@ app.use(express.urlencoded({ extended: true }));
 // Cookie parser middlerware
 app.use(cookieParser());
 
-app.get("/", (req, res) => {
-  res.send("Server is running");
-});
-
 app.use("/api/products", productsRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/upload", uploadRouter);
-
 app.get("/api/config/paypal", (req, res) => {
   res.json({ clientId: process.env.PAYPAL_CLIENT_ID });
 });
 
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("Server is running in development mode");
+  });
+}
 
 app.use(notFound);
 app.use(errorHandler);
