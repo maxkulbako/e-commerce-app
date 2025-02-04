@@ -13,6 +13,7 @@ import {
 import Rating from "../components/Rating";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import Meta from "../components/Meta";
 import {
   useGetProductDetailsQuery,
   useCreateProductReviewMutation,
@@ -76,7 +77,7 @@ const ProductPage = () => {
         </Message>
       ) : (
         <>
-          {" "}
+          <Meta title={product.name} description={product.description} />
           <Row>
             <Col md={5}>
               <Image src={product.image} alt={product.name} fluid />
@@ -167,7 +168,6 @@ const ProductPage = () => {
                     <strong>{review.name}</strong>
                     <Rating value={review.rating} />
                     <p>{review.comment}</p>
-                    
                   </ListGroup.Item>
                 ))}
                 <ListGroup.Item>

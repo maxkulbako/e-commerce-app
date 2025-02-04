@@ -38,8 +38,7 @@ const ProductEditPage = () => {
   const [uploadProductImage, { isLoading: uploadProductImageLoading }] =
     useUploadProductImageMutation();
 
-  const [updateProduct, { isLoading: updateProductLoading }] =
-    useUpdateProductMutation();
+  const [updateProduct] = useUpdateProductMutation();
 
   useEffect(() => {
     if (product) {
@@ -119,13 +118,9 @@ const ProductEditPage = () => {
                 placeholder="Enter image URL"
                 {...register("image")}
               />
-              <Form.Control
-                type="file"
-                onChange={handleImageUpload} // Завантаження файлу
-              />
+              <Form.Control type="file" onChange={handleImageUpload} />
               {uploadProductImageLoading && <Loader />}
             </Form.Group>
-
             <Form.Group controlId="brand">
               <Form.Label>Brand</Form.Label>
               <Form.Control
