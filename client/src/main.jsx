@@ -96,7 +96,7 @@ const router = createBrowserRouter([
             element: <OrdersListPage />,
           },
           {
-            path: "admin/productlist",
+            path: "admin/productslist",
             element: <ProductsListPage />,
           },
           {

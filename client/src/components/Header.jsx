@@ -6,7 +6,7 @@ import logo from "../assets/logo.png";
 import { logout } from "../slices/authSlice";
 import { useLogoutMutation } from "../slices/usersApi";
 import SearchBox from "./SearchBox";
-
+import { resetCart } from "../slices/cartSlice";
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
@@ -19,6 +19,7 @@ const Header = () => {
     try {
       await logoutApi().unwrap();
       dispatch(logout());
+      dispatch(resetCart());
       navigate("/");
     } catch (err) {
       console.log(err);
