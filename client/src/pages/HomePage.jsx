@@ -3,6 +3,7 @@ import Product from "../components/Product";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Paginate from "../components/Paginate";
+import ProductCarousel from "../components/ProductCarousel";
 import { useParams } from "react-router";
 import { useGetProductsQuery } from "../slices/productsApiSlice";
 
@@ -15,6 +16,7 @@ const HomePage = () => {
 
   return (
     <>
+      {!keyword && <ProductCarousel />}
       {isLoading ? (
         <Loader />
       ) : error ? (
