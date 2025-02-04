@@ -7,9 +7,10 @@ import { useParams } from "react-router";
 import { useGetProductsQuery } from "../slices/productsApiSlice";
 
 const HomePage = () => {
-  const { pageNumber } = useParams();
+  const { pageNumber, keyword } = useParams();
   const { data, isLoading, error } = useGetProductsQuery({
     pageNumber: pageNumber || 1,
+    keyword: keyword || "",
   });
 
   return (
@@ -30,7 +31,7 @@ const HomePage = () => {
               </Col>
             ))}
           </Row>
-          <Paginate pages={data.pages} page={data.page} />
+          <Paginate pages={data.pages} page={data.page} keyword={keyword} />
         </>
       )}
     </>

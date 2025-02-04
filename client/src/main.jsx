@@ -36,7 +36,15 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
+        path: "search/:keyword/",
+        element: <HomePage />,
+      },
+      {
         path: "page/:pageNumber",
+        element: <HomePage />,
+      },
+      {
+        path: "search/:keyword/page/:pageNumber",
         element: <HomePage />,
       },
       {
@@ -83,11 +91,11 @@ const router = createBrowserRouter([
         element: <AdminRoute />,
         children: [
           {
-            path: "admin/orderslist/:pageNumber",
+            path: "admin/orderslist/",
             element: <OrdersListPage />,
           },
           {
-            path: "admin/productslist/:pageNumber",
+            path: "admin/productlist",
             element: <ProductsListPage />,
           },
           {
