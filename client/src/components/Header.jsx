@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import logo from "../assets/logo.png";
 import { logout } from "../slices/authSlice";
 import { useLogoutMutation } from "../slices/usersApi";
+import SearchBox from "./SearchBox";
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
@@ -52,12 +53,13 @@ const Header = () => {
                   }}
                 />
               </div>
-              Techify
+              Technify
             </Navbar.Brand>
           </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
+              <SearchBox />
               <Link to="/cart" className="nav-link">
                 <FaShoppingCart /> Cart
                 {cartItems.length > 0 && (
